@@ -6,6 +6,12 @@ format: html
 
 ## Header 1
 
+Test of GIthub
+
+Does this work
+
+what is if add more lines
+
 ```{r setup}
 #| include: false
 ```
