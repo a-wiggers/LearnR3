@@ -30,3 +30,25 @@ read_all <- function(filename) {
 
   return(data)
 }
+
+#' Get the IDs
+#'
+#' @param data List the dataset that you want to extract ID from
+#'
+#' @returns Document with correct ID
+
+get_participant_id <- function(data) {
+  id <- data %>%
+    dplyr::mutate(
+      id = stringr::str_extract(
+        file_path_id,
+        pattern = "/stress/[:alnum:]{2}/"
+      ) %>%
+        stringr::str_remove("/stress/") %>%
+        stringr::str_remove("/"),
+      .before = file_path_id
+    ) %>%
+    dplyr::select(-file_path_id)
+
+  return(id)
+}
