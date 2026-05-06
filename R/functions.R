@@ -15,21 +15,24 @@ read <- function(file_path, max_rows = 100) {
 }
 
 
-#' Read in all data
+#' Read all `.csv.gz` files in the `stress/` folder into one data frame.
 #'
-#' @param filename List of relevant files
+#' @param filename The name of files in the sub-folders that we
+#'    want to read in.
 #'
-#' @returns Data
+#' @returns A single data frame/tibble.
+#'
 read_all <- function(filename) {
-  files <- here::here("data-raw/nurses-stress/") %>%
+  files <- here::here("data-raw/nurses-stress/") |>
     fs::dir_ls(regexp = filename, recurse = TRUE)
 
-  data <- files %>%
-    map(read) %>%
+  data <- files |>
+    purrr::map(read) |>
     purrr::list_rbind(names_to = "file_path_id")
 
   return(data)
 }
+
 
 #' Get the IDs
 #'
