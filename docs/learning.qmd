@@ -9,6 +9,7 @@ Whenever it has setup in the chunk name, it will automatically run in the beginn
 ```{r setup}
 library(tidyverse)
 library(here)
+library(fs)
 source(here("R/functions.R"))
 ```
 
@@ -109,7 +110,6 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") %>% read()
 ## Exercise 16.7
 
 ```{r}
-
 # Outputs only 100 rows
 here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
   read(max_rows = 10)
@@ -123,4 +123,51 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") |>
   read(max_rows = Inf)
 ```
 
+## Using map
+dir_ls : Lists all the files in a specific folder. Below we list all the files in the folder that are relevant for us to read. recurse = TRUE - this is because they are not all stored in the same folder. 
+```{r}
+hr_files <- here("data-raw/nurses-stress/") %>%
+  dir_ls(regexp = "HR.csv.gz", recurse = TRUE)
 
+hr_files
+```
+
+Herunder binder vi rækkerne med data sammen og giver id nummer
+```{r}
+hr_data <- hr_files %>%
+  map(read) %>% # no brackets
+  list_rbind(names_to = "file_path_id")
+```
+
+## Exercise: Convert map to function and use on sleep
+
+Make a function that reads in all datasets
+```{r}
+#| eval: false
+#' Read in all data
+#'
+#' @param filename List of relevant files
+#'
+#' @returns Data
+read_all <- function(filename) {
+  files <- here::here("data-raw/nurses-stress/") %>%
+    fs::dir_ls(regexp = filename, recurse = TRUE)
+
+  data <- files %>%
+    map(read) %>%
+    purrr::list_rbind(names_to = "file_path_id")
+
+  return(data)
+}
+```
+
+
+```{r}
+hr_data <- read_all("HR.csv.gz")
+ibi_data <- read_all("IBI.csv.gz")
+bvp_data <- read_all("BVP.csv.gz")
+```
+
+
+```{r}
+```
