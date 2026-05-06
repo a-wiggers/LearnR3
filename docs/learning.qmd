@@ -9,12 +9,13 @@ Whenever it has setup in the chunk name, it will automatically run in the beginn
 ```{r setup}
 library(tidyverse)
 library(here)
-library(snakecase)
+source(here("R/functions.R"))
 ```
 
 ## Importing new data
 Use the _ version of read csv and not the .
 ```{r}
+#| eval: false
 here("data-raw/nurses-stress/stress/5C/5C_1586886626/HR.csv.gz") %>%
   read_csv(
     show_col_types = FALSE,
@@ -24,6 +25,7 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886626/HR.csv.gz") %>%
 
 ## Exercise: Reading other files
 ```{r}
+#| eval: false
 here("data-raw/nurses-stress/stress/5C/5C_1586886712//HR.csv.gz") %>%
   read_csv(
     show_col_types = FALSE,
@@ -33,6 +35,7 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886712//HR.csv.gz") %>%
 
 
 ```{r}
+#| eval: false
 here("data-raw/nurses-stress/stress/5C/5C_1586886712//HR.csv.gz") %>%
   read_csv(
     show_col_types = FALSE,
@@ -42,6 +45,7 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886712//HR.csv.gz") %>%
 
 
 ```{r}
+#| eval: false
 here("data-raw/nurses-stress/stress/6B/6B_1587569373/EDA.csv.gz") %>%
   read_csv(
     show_col_types = FALSE,
@@ -51,6 +55,7 @@ here("data-raw/nurses-stress/stress/6B/6B_1587569373/EDA.csv.gz") %>%
 
 
 ```{r}
+#| eval: false
 here("data-raw/nurses-stress/stress/6B/6B_1587569373/EDA.csv.gz") %>%
   read_csv(
     show_col_types = FALSE,
@@ -77,6 +82,7 @@ add_numbers <- function(num1, num2) {
 ## Make a function that loads the data
 
 ```{r}
+#| eval: false
 #' Read in one nurses stress data file
 #'
 #' @param file_path A path to a data file
@@ -101,24 +107,6 @@ here("data-raw/nurses-stress/stress/5C/5C_1586886712/HR.csv.gz") %>% read()
 ```
 
 ## Exercise 16.7
-
-```{r}
-#' Read in one nurses stress data file
-#'
-#' @param file_path A path to a data file
-#' @param max_rows Type the number of rows you will need
-#'
-#' @returns Outputs a dataframe /tibble
-read <- function(file_path, max_rows = 100) {
-  data <- file_path %>%
-    readr::read_csv(
-      show_col_types = FALSE,
-      name_repair = snakecase::to_snake_case,
-      n_max = max_rows
-    )
-  return(data)
-}
-```
 
 ```{r}
 
